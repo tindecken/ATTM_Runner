@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <Setting Name="NUnitConsole" Value="C:\dev\NUnit.Console-3.12.0\bin\netcoreapp3.1\"></Setting>
+  <Setting Name="DevTestProjectDLL" Value="C:\dev\ATTM\TestProject\bin\Debug\netcoreapp3.1\TestProject.dll"></Setting>
+  <Setting Name="DevTestProjectFolder" Value="C:\dev\ATTM\TestProject\bin\Debug\netcoreapp3.1"></Setting>
+  <Setting Name="RegressionTestProjectDLL" Value="C:\dev\ATTM\TestProject\bin\Debug\netcoreapp3.1\TestProject.dll"></Setting>
+  <Setting Name="RegressionTestProjectFolder" Value="C:\dev\ATTM\TestProject\bin\Debug\netcoreapp3.1"></Setting>
+  <Setting Name="ClientName" Value="Tindecken"></Setting>
+  <Setting Name="MongoDBConnectionString" Value="mongodb://localhost:27017"></Setting>
+  <Setting Name="MongoDBDatabaseName" Value="ATTM_DB"></Setting>
+  <Setting Name="DevQueueCollection" Value="DevQueues"></Setting>
+  <Setting Name="RegressionQueueCollection" Value="RegressionTests"></Setting>
+  <Setting Name="RegressionName" Value="QA_Demo_8"></Setting>
+  <Setting Name="HubConnection" Value="http://localhost:5000/monitoring"></Setting>
+</Settings>
