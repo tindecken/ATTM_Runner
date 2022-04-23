@@ -176,7 +176,7 @@ namespace Runner.Invocables
                 process.WaitForExit();
             }
 
-            //Running
+            //Runningg
             //Get TestCase need to run from table debug
             //Query database to get one test case for running
             return Task.CompletedTask;
