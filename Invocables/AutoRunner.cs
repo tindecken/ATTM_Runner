@@ -1,7 +1,6 @@
 ﻿using Coravel.Invocable;
 using log4net;
 using log4net.Config;
-using Runner.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -12,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using CommonModels;
 using Microsoft.AspNetCore.SignalR.Client;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -134,18 +134,18 @@ namespace Runner.Invocables
                     }
 
                     StringBuilder NUnitParams = new StringBuilder();
-                    NUnitParams.Append($" --test={regQueue.TestCaseFullCodeName} {DevTestProjectDLL}");
+                    NUnitParams.Append($" --test={regQueue.TestCaseFullCodeName} {RegressionTestProjectDLL}");
                     Console.WriteLine($"Run command: {NUnitCommandPath} {NUnitParams}");
                     Process process = new Process();
                     process.StartInfo.FileName = $"cmd.exe"; // Specify exe name.
                     process.StartInfo.Arguments = $"/c {NUnitCommandPath} {NUnitParams}";
                     process.StartInfo.UseShellExecute = false;
-                    process.StartInfo.WorkingDirectory = DevTestProjectFolder;
+                    process.StartInfo.WorkingDirectory = RegressionTestProjectFolder;
                     process.Start();
                     process.WaitForExit();
                 }
             }
-            else {
+            else { //there's devqueue need to execute
                 Console.WriteLine("-----------------------------------------------------");
                 Console.WriteLine("-----------------------------------------------------");
                 Console.WriteLine("");
@@ -165,13 +165,13 @@ namespace Runner.Invocables
                 }
 
                 StringBuilder NUnitParams = new StringBuilder();
-                NUnitParams.Append($" --test={devQueue.TestCaseFullName} {RegressionTestProjectDLL}");
+                NUnitParams.Append($" --test={devQueue.TestCaseFullName} {DevTestProjectDLL}");
                 Console.WriteLine($"Run command: {NUnitCommandPath} {NUnitParams}");
                 Process process = new Process();
                 process.StartInfo.FileName = $"cmd.exe"; // Specify exe name.
                 process.StartInfo.Arguments = $"/c {NUnitCommandPath} {NUnitParams}";
                 process.StartInfo.UseShellExecute = false;
-                process.StartInfo.WorkingDirectory = RegressionTestProjectFolder;
+                process.StartInfo.WorkingDirectory = DevTestProjectFolder;
                 process.Start();
                 process.WaitForExit();
             }
@@ -184,7 +184,7 @@ namespace Runner.Invocables
 
         private DevQueue GetRunnableDevQueue()
         {
-            var queuesFilter = Builders<DevQueue>.Filter.Eq(x => x.QueueStatus, "InQueue");
+            var queuesFilter = Builders<DevQueue>.Filter.Eq(x => x.QueueStatus, TestStatus.InQueue);
             var queues = _devQueues.Find(queuesFilter).ToList();
             if (queues.Count > 2)
             {
@@ -193,21 +193,18 @@ namespace Runner.Invocables
                 {
                     return queueClientHighPriority;
                 }
-                else
+                var queueClient = queues.Find(q => q.ClientName == ClientName);
+                if (queueClient != null)
                 {
-                    var queueClient = queues.Find(q => q.ClientName == ClientName);
-                    if (queueClient != null)
-                    {
-                        return queueClient;
-                    }
-                    else return queues.FirstOrDefault();
+                    return queueClient;
                 }
+                return queues.FirstOrDefault();
             }
-            else return queues.FirstOrDefault();
+            return queues.FirstOrDefault();
         }
         private  RegressionTest GetRunnableRegressionQueue()
         {
-            var queuesFilter = Builders<RegressionTest>.Filter.Eq(x => x.Status, "InQueue");
+            var queuesFilter = Builders<RegressionTest>.Filter.Eq(x => x.Status, TestStatus.InQueue);
             queuesFilter &= Builders<RegressionTest>.Filter.Eq(x => x.RegressionName, RegressionName);
             queuesFilter &=
                 Builders<RegressionTest>.Filter.Where(x =>
@@ -242,7 +239,7 @@ namespace Runner.Invocables
         }
         private void UpdateDevQueueIsTaken(DevQueue devQueue)
         {
-            var update = Builders<DevQueue>.Update.Set(d => d.QueueStatus, "Queued")
+            var update = Builders<DevQueue>.Update.Set(d => d.QueueStatus, TestStatus.Queued)
                 .Set(x => x.RunAt, DateTime.UtcNow)
                 .Set(x => x.ClientName, ClientName);
             _devQueues.UpdateOne(devQ => devQ.Id == devQueue.Id, update);
@@ -250,7 +247,7 @@ namespace Runner.Invocables
 
         private void UpdateRegressionQueueIsTaken(RegressionTest regTest)
         {
-            var update = Builders<RegressionTest>.Update.Set(d => d.Status, "Running")
+            var update = Builders<RegressionTest>.Update.Set(d => d.Status, TestStatus.Running)
                 .Set(x => x.ClientName, ClientName);
             _regQueues.UpdateOne(regQ => regQ.Id == regTest.Id, update);
         }

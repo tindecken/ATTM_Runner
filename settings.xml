@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Settings>
-  <Setting Name="NUnitConsole" Value="C:\dev\NUnit.Console-3.12.0\bin\netcoreapp3.1\"></Setting>
-  <Setting Name="DevTestProjectDLL" Value="C:\dev\ATTM\TestProject\bin\Debug\netcoreapp3.1\TestProject.dll"></Setting>
-  <Setting Name="DevTestProjectFolder" Value="C:\dev\ATTM\TestProject\bin\Debug\netcoreapp3.1"></Setting>
-  <Setting Name="RegressionTestProjectDLL" Value="C:\dev\ATTM\TestProject\bin\Debug\netcoreapp3.1\TestProject.dll"></Setting>
-  <Setting Name="RegressionTestProjectFolder" Value="C:\dev\ATTM\TestProject\bin\Debug\netcoreapp3.1"></Setting>
+  <Setting Name="NUnitConsole" Value="c:\dev\ATTM_Client\NUnit.Console-3.15.2\bin\net6.0\"></Setting>
+  <Setting Name="DevTestProjectDLL" Value="c:\dev\ATTM_Client\DevelopFolder\TestProject.dll"></Setting>
+  <Setting Name="DevTestProjectFolder" Value="c:\dev\ATTM_Client\DevelopFolder\"></Setting>
+  <Setting Name="RegressionTestProjectDLL" Value="c:\dev\ATTM_Client\RegressionFolder\TestProject.dll"></Setting>
+  <Setting Name="RegressionTestProjectFolder" Value="c:\dev\ATTM_Client\RegressionFolder\"></Setting>
   <Setting Name="ClientName" Value="Tindecken"></Setting>
   <Setting Name="MongoDBConnectionString" Value="mongodb://localhost:27017"></Setting>
   <Setting Name="MongoDBDatabaseName" Value="ATTM_DB"></Setting>
